@@ -23,10 +23,32 @@ unsigned int staticListInsert(StaticList* staticList, void* element) {
   return staticList->size++;
 }
 
+void* staticListElementAt(const StaticList* staticList, unsigned int index) {
+  return staticList->list[index];
+}
+
+unsigned int staticListSize(const StaticList* staticList) {
+  return staticList->size;
+}
+
 long staticListFind(const StaticList* staticList, const void* element) {
   for(unsigned int i = 0; i < staticList->size; i++) {
     if(staticList->list[i] == element) return i;
   }
 
   return -1;
+}
+
+StaticList* staticListConcat(const StaticList* prepend, const StaticList* append) {
+  StaticList* staticList = staticListAlloc(sizeof(prepend->list[0]), prepend->allocated + append->allocated);
+
+  staticList->size = prepend->size + append->size;
+
+  for(int i = 0; i < staticList->size; i++) {
+    staticList->list[i] = i < prepend->size
+      ? prepend->list[i]
+      : append->list[i - prepend->size];
+  }
+
+  return staticList;
 }

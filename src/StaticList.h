@@ -9,6 +9,9 @@ typedef struct {
 
 StaticList* staticListAlloc(const unsigned long long byteSize, const unsigned int length);
 unsigned int staticListInsert(StaticList* staticList, void* element);
+void* staticListElementAt(const StaticList* staticList, unsigned int index);
+unsigned int staticListSize(const StaticList* staticList);
 long staticListFind(const StaticList* staticList, const void* element);
+StaticList* staticListConcat(const StaticList* prepend, const StaticList* append);
 
 #endif//__ELLYZ__DATA_STRUCTURES__STATIC_LIST__
