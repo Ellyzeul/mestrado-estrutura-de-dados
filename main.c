@@ -25,7 +25,7 @@ int main(void) {
     printf("[%d] = %d\n", i, (int) staticListElementAt(concat, i));
   }
 
-  printf("Size:\t%u\nAllocated:\t%u", concat->size, concat->allocated);
+  printf("Tamanho da lista:\t%u\nAlocado:\t\t%u", concat->size, concat->allocated);
 
   return 0;
 }
