@@ -1,0 +1,74 @@
+tipo Nó {
+  chave: texto,
+  valor: qualquer,
+}
+
+tipo HashMap {
+  tamanho: inteiro,
+  lista: Nó[],
+}
+
+função alocar(tamanhoDaLista: inteiro) -> HashMap
+início
+  variável map: HashMap = {
+    tamanho: tamanhoDaLista,
+    lista: [],
+  };
+
+  para(i: inteiro = 0; i < tamanhoDaLista; i++) início
+    map->lista[i] = nulo;
+  fim
+
+  retorna map;
+fim
+
+função hash(chave: texto, divisor: inteiro) -> inteiro
+início
+  variável valorHash: inteiro = 0;
+  variável multiplicador: inteiro = 1;
+
+  para(caractere em chave) início
+    valorHash += ((inteiro) caractere) * multiplicador;
+    multiplicador += 1;
+  fim
+
+  retorna valorHash;
+fim
+
+// Esta função garante a geração de todos os índices, sem cair em um loop infinito
+função rehash(índice: inteiro, tentativa: inteiro, divisor: inteiro) -> inteiro
+início
+  retorna (índice + tentativa + (tentativa / divisor)) % divisor;
+fim
+
+função inserir(map: HashMap, chave: texto, valor: qualquer) -> vazio
+início
+  variável índice: inteiro = hash(chave, map->tamanho);
+  variável tentativa: inteiro = 1;
+  variável nó: Nó = {
+    chave: chave,
+    valor: valor,
+  };
+
+  enquanto(map->lista[índice] == nulo) inicio
+    índice = rehash(índice, tentativa, map->tamanho);
+    tentativa += 1;
+  fim
+
+  map->lista[índice] = nó;
+fim
+
+função recuperar(map: HashMap, chave: texto) -> qualquer
+início
+  variável índice: inteiro = hash(chave, map->tamanho);
+  variável tentativa: inteiro = 1;
+  variável nó: Nó = map->lista[índice];
+
+  enquanto(nó->chave != chave) inicio
+    índice = rehash(índice, tentativa, map->tamanho);
+    nó = map->lista[índice];
+    tentativa += 1;
+  fim
+
+  retorna nó->valor;
+fim
